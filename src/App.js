@@ -4,9 +4,20 @@ import './App.css';
 import Dashboard from './components/Dashboard';
 import Preferences from './components/Preferences';
 import Login from './components/Login'
+import useToken from './components/useToken';
+
+function setToken(userToken) {
+  sessionStorage.setItem('token',JSON.stringify(userToken))
+}
+
+function getToken() {
+  const tokenString = sessionStorage.getItem('token');
+  const userToken = JSON.parse(tokenString)
+  return userToken?.token
+}
 
 function App() {
-  const [token, setToken] = useState()
+  const { token, setToken } = useToken();
 
   if (!token) {
     return <Login setToken={setToken} />
