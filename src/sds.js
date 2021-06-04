@@ -1,31 +1,17 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-import './Login.css';
+export default function useToken() {
+  const getToken = () => {
+    const tokenString = sessionStorage.getItem('token');
+    const userToken = JSON.parse(tokenString);
+    return userToken?.token
+  };
 
-export default function Login({ setToken }) {
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
-  return(
-    <div className="login-wrapper">
-      <h1>Please Log In</h1>
-      <form>
-        <label>
-          <p>Username</p>
-          <input type="text" onChange={e => setUserName(e.target.value)}/>
-        </label>
-        <label>
-          <p>Password</p>
-          <input type="password" onChange={e => setPassword(e.target.value)}/>
-        </label>
-        <div>
-          <button type="submit">Submit</button>
-        </div>
-      </form>
-    </div>
-  )
+  const [token, setToken] = useState(getToken());
+
+  const saveToken = userToken => {
+    sessionStorage.setItem('token', JSON.stringify(userToken));
+    setToken(userToken.token);
+  };
 }
-
-Login.propTypes = {
-  setToken: PropTypes.func.isRequired
-};
+const { token, setToken } = useToken();
